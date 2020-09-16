@@ -1,50 +1,71 @@
-// import React from 'react';
-// import { useForm } from "react-hook-form";
-// import { Form, Button, Container, Row, Card, Col, Table } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Form, Button, Container, Row, Card, Col, Table } from 'react-bootstrap';
+import Header from '../Header/Header';
 
-// const LoanSearch = () => {
-//     const { register, handleSubmit } = useForm();
+const LoanSearch = () => {
+    const [state, setState] = useState({
+        fullName: '',
+        loanNumber: '',
+        loanAmount: ''
+    })
 
-//     const onSubmit = (data) => console.log(data);
+    const handleChange = (e) => {
+        setState({
+            ...state,
+            [e.target.name]: e.target.value
+        })
+    }
 
-//     return (
-//         <Container className="mt-5">
-//             <Row>
-//                 <Card>
-//                     <Card.Header>
-//                         <Form inline onSubmit={handleSubmit(onSubmit)}>
-//                             <Form.Row className="align-items-center">
-//                                 <Form.Group>
-//                                     <Col xs="auto">
-//                                         <Form.Control name="fullName" placeholder="Borrower Full Name" type="text" ref={register} />
-//                                     </Col>
-//                                     <Col xs="auto">
-//                                         <Form.Control name="loanNumber" placeholder="Loan Number" type="number" ref={register} />
-//                                     </Col>
-//                                     <Col xs="auto">
-//                                         <Form.Control name="loanAmount" placeholder="Loan Amount" type="number" ref={register} />
-//                                     </Col>
-//                                 </Form.Group>
-//                                 <Button variant="outline-primary" type="submit">Search</Button>
-//                             </Form.Row>
-//                         </Form>
-//                     </Card.Header>
-//                     <Card.Body>
-//                         <Table striped bordered hover>
-//                             <thead>
-//                                 <tr>
-//                                     <th>Id</th>
-//                                     <th>Borrower Name</th>
-//                                     <th>Loan Number</th>
-//                                     <th>Loan Amount</th>
-//                                 </tr>
-//                             </thead>
-//                         </Table>
-//                     </Card.Body>
-//                 </Card>
-//             </Row>
-//         </Container>
-//     );
-// }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(state);
 
-// export default LoanSearch;
+    };
+
+    return (
+        <>
+            <Header />
+            <Container>
+                <Row>
+                    <Col className="d-flex justify-content-center mt-5">
+                        <Card>
+                            <Card.Header>
+                                <Form inline onSubmit={handleSubmit}>
+                                    <Form.Row className="align-items-center">
+                                        <Form.Group>
+                                            <Col xs="auto">
+                                                <Form.Control name="fullName" placeholder="Borrower Full Name" type="text" value={state.fullName} onChange={handleChange} />
+                                            </Col>
+                                            <Col xs="auto">
+                                                <Form.Control name="loanNumber" placeholder="Loan Number" type="number" min="0" value={state.loanNumber} onChange={handleChange} />
+                                            </Col>
+                                            <Col xs="auto">
+                                                <Form.Control name="loanAmount" placeholder="Loan Amount" type="number" min="0" value={state.loanAmount} onChange={handleChange} />
+                                            </Col>
+                                        </Form.Group>
+                                        <Button variant="outline-primary" type="submit">Search</Button>
+                                    </Form.Row>
+                                </Form>
+                            </Card.Header>
+                            <Card.Body>
+                                <Table striped bordered hover>
+                                    <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Borrower Name</th>
+                                            <th>Loan Number</th>
+                                            <th>Loan Amount</th>
+                                        </tr>
+                                    </thead>
+                                </Table>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
+            </Container>
+        </>
+
+    );
+}
+
+export default LoanSearch;
