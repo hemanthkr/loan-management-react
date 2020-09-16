@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, Button, Container, Row, Col, Form } from 'react-bootstrap';
+import Axios from 'axios';
 
 const LoginForm = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [errors, setErrors] = useState([])
     const [isFormValid, setIsFormValid] = useState(false)
+    const [isSubmitted, setIsSubmitted] = useState(false);
     const isMounted = useRef(false)
 
     useEffect(() => {
@@ -32,8 +34,37 @@ const LoginForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(email, password)
+        setIsSubmitted(true)
     };
+
+    useEffect(() => {
+        if (isSubmitted) {
+            setIsSubmitted(false);
+            console.log("making api call")
+            let user = {
+                email,
+                password
+            }
+            //console.log(user)
+            axios.post('--------------URL--------------', user)
+                .then(response => {
+                    if (response.status === 200) {
+                        localStorage.setItem("auth", response.data.jwt);
+                        //console.log(response.data.roles[0]);
+                    }
+                    else {
+                        alert("Login not successful. Please try after some time!!!")
+                    }
+                    //console.log(response.data)
+                    //console.log(localStorage.getItem("auth"))
+                })
+                .catch(error => {
+                    console.log(error)
+                    alert("Login not successful. Please try after some time!!!")
+                }
+                )
+        }
+    }, [isSubmitted])
 
     return (
         <Container>

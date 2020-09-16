@@ -7,6 +7,7 @@ const Header = () => (
         <Nav className="ml-auto">
             <Nav.Link href="/" >Logout</Nav.Link>
             <Nav.Link href="/search">Search Loan Page</Nav.Link>
+            <Nav.Link href="/update">Update Loan</Nav.Link>
         </Nav>
     </Navbar>
 );
