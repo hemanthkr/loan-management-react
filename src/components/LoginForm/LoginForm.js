@@ -42,11 +42,11 @@ const LoginForm = () => {
             setIsSubmitted(false);
             console.log("making api call")
             let user = {
-                email,
+                username: email,
                 password
             }
             // console.log(user)
-            Axios.post('--------------URL--------------', user)
+            Axios.post('http://localhost:9111/loan/api/login', user)
                 .then(response => {
                     if (response.status === 200) {
                         localStorage.setItem("auth", response.data.jwt);
@@ -77,7 +77,7 @@ const LoginForm = () => {
                                 <Form.Label>Email address</Form.Label>
                                 <Form.Group>
                                     <Form.Control name="emailId" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                                    {errors && <p>{errors.emailAddress}</p>}
+                                    {errors && errors.emailAddress}
                                 </Form.Group>
                                 <Form.Group>
                                     <Form.Label>Password</Form.Label>
