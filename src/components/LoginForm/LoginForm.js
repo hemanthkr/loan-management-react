@@ -45,8 +45,8 @@ const LoginForm = () => {
                 email,
                 password
             }
-            //console.log(user)
-            axios.post('--------------URL--------------', user)
+            // console.log(user)
+            Axios.post('--------------URL--------------', user)
                 .then(response => {
                     if (response.status === 200) {
                         localStorage.setItem("auth", response.data.jwt);

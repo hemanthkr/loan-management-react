@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import LoginForm from '../components/LoginForm/LoginForm';
+import LoginForm from './LoginForm';
 
 describe('Login component tests', ()=> {
     const wrapper = shallow(<LoginForm />);
@@ -15,4 +15,9 @@ describe('Login component tests', ()=> {
     it('btn should be disabled', ()=> {
       expect(wrapper.find('Button').is('[disabled]')).toBetruthy;
     });
+
+    it('should render default', () => {
+      expect(wrapper).toMatchSnapshot();
+    })
   });
+

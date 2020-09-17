@@ -69,3 +69,5 @@ const UpdateLoan = () => {
 }
 
 export default UpdateLoan;
+
+
