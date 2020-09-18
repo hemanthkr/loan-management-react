@@ -99,12 +99,12 @@ const LoanSearchTable = ({ loan }) => {
             </thead>
             <tbody>
                 {loan.map(item => {
-                    <tr key={loanNumber}>
-                        <td>{loan.id}</td>
+                    <tr key={loan.loanNumber}>
+                        <td>{loan.loanNumber}</td>
                         <td>{loan.borrowerName}</td>
                         <td>{loan.loanNumber}</td>
                         <td>{loan.loanAmount}</td>
-                        <td><Button href="/update:{loan.id}">Update</Button></td>
+                        <td><Button href="/update:{loan.loanNumber}">Update</Button></td>
                     </tr>
                 })}
             </tbody>
