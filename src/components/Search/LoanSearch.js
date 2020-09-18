@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Button, Container, Row, Card, Col, Table } from 'react-bootstrap';
 import Header from '../Header/Header';
 import Axios from 'axios';
@@ -9,8 +9,11 @@ const LoanSearch = () => {
         loanNumber: '',
         loanAmount: ''
     }
+
     const [state, setState] = useState(search);
     const [showResults, setShowResults] = useState(false);
+    const [loan, setLoan] = useState([]);
+    const [isSubmitted, setIsSubmitted] = useState(false);
 
 
     const handleChange = (e) => {
@@ -22,19 +25,27 @@ const LoanSearch = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(state);
         setState(search);
+        setIsSubmitted(true);
         setShowResults(true);
-
-        Axios.get('==========URL===========', state)
-            .then(response => {
-                console.log(response)
-            })
-            .catch(error => {
-                console.log(error)
-            })
-
     };
+
+    useEffect(() => {
+        if (isSubmitted) {
+            setIsSubmitted(false)
+            Axios.post('http://localhost:8010/loan-api/searchLoan', state)
+                .then(response => {
+                    if (response.status === 200) {
+                        let data = JSON.stringify(response.data);
+                        setLoan(data);
+                    }
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        }
+
+    }, [isSubmitted])
 
     return (
         <>
@@ -62,7 +73,7 @@ const LoanSearch = () => {
                                 </Form>
                             </Card.Header>
                             <Card.Body>
-                                {showResults ? <LoanSearchTable /> : null}
+                                {showResults ? <LoanSearchTable loan={loan} /> : null}
                             </Card.Body>
                         </Card>
                     </Col>
@@ -74,7 +85,7 @@ const LoanSearch = () => {
 }
 
 
-const LoanSearchTable = () => {
+const LoanSearchTable = ({ loan }) => {
     return (
         <Table striped bordered hover>
             <thead>
@@ -83,13 +94,29 @@ const LoanSearchTable = () => {
                     <th>Borrower Name</th>
                     <th>Loan Number</th>
                     <th>Loan Amount</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-
+                {loan.map(item => {
+                    <tr key={loanNumber}>
+                        <td>{loan.id}</td>
+                        <td>{loan.borrowerName}</td>
+                        <td>{loan.loanNumber}</td>
+                        <td>{loan.loanAmount}</td>
+                        <td><Button href="/update:{loan.id}">Update</Button></td>
+                    </tr>
+                })}
             </tbody>
         </Table>
     )
 }
 
 export default LoanSearch;
+
+
+{/* <table>
+  {this.state.orderDetails.map((item =>
+  <tr><td key={item.OrderID}>{item.CustomerID}</td></tr>
+  ))}
+</table> */}
